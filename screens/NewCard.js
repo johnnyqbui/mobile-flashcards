@@ -3,13 +3,9 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import { connect } from "react-redux";
 import { Button } from "react-native-elements";
 import * as actions from "../actions/DeckActions";
-import { addCard } from "../utils/helpers";
+import { createCard } from "../utils/helpers";
 
 class NewCard extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    title: navigation.state.params.title
-  });
-
   state = {
     question: "",
     answer: ""
@@ -17,8 +13,11 @@ class NewCard extends Component {
 
   addCard = (question, answer) => {
     const { addCardToDeck, selectedDeck, decks } = this.props;
-    const card = addCard(decks, selectedDeck.title, question, answer)
-    console.log(card)
+    this.setState({
+      question: "",
+      answer: ""
+    })
+    const card = createCard(question, answer)
     addCardToDeck(selectedDeck.title, card)
   };
 
@@ -31,11 +30,13 @@ class NewCard extends Component {
         <TextInput
           style={styles.input}
           placeholder="Question"
+          value={question}
           onChangeText={question => this.setState({ question })}
         />
         <TextInput
           style={styles.input}
           placeholder="Answer"
+          value={answer}
           onChangeText={answer => this.setState({ answer })}
         />
         <Button
@@ -56,18 +57,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
+    paddingTop: 50
   },
   input: {
-    height: 40,
-    fontSize: 14,
-    margin: 10,
+    height: 50,
+    fontSize: 16,
+    margin: 15,
+    padding: 5,
     borderBottomWidth: 1,
     borderColor: 'silver',
     backgroundColor: '#eee',
     alignSelf: 'stretch',
     flexDirection: 'row',
-    padding: 5
   },
   button: {
     backgroundColor: "#00B1FF",
@@ -78,10 +79,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = deckData => {
-  const { decks, selectedDeck } = deckData;
+  const { selectedDeck, decks } = deckData;
   return {
-    decks,
-    selectedDeck
+    selectedDeck,
+    decks
   };
 };
 

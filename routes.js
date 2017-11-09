@@ -19,7 +19,10 @@ const Tabs = TabNavigator(
         tabBarLabel: "Decks",
         tabBarIcon: ({ tintColor }) => (
           <MaterialIcons name="view-list" size={35} color={tintColor} />
-        )
+        ),
+        headerStyle: {
+          marginTop: -20,
+        },
       }
     },
     NewDeck: {
@@ -33,9 +36,6 @@ const Tabs = TabNavigator(
     }
   },
   {
-    navigationOptions: {
-      header: null
-    },
     tabBarOptions: {
       activeTintColor: Platform.OS === "ios" ? "purple" : "white",
       style: {
@@ -61,9 +61,8 @@ export const rootNavigator = () => {
     IndividualDeck: {
       screen: IndividualDeck,
       navigationOptions: {
-        headerTintColor: "grey",
+        headerTintColor: "#00B1FF",
         headerStyle: {
-          backgroundColor: "white",
           marginTop: -20,
         },
       }
@@ -71,9 +70,8 @@ export const rootNavigator = () => {
     NewCard: {
       screen: NewCard,
       navigationOptions: {
-        headerTintColor: "grey",
+        headerTintColor: "#00B1FF",
         headerStyle: {
-          backgroundColor: "white",
           marginTop: -20,
         }
       }
@@ -81,9 +79,8 @@ export const rootNavigator = () => {
     Quiz: {
       screen: Quiz,
       navigationOptions: {
-        headerTintColor: "grey",
+        headerTintColor: "#00B1FF",
         headerStyle: {
-          backgroundColor: "white",
           marginTop: -20,
         }
       }

@@ -6,6 +6,10 @@ import Deck from '../components/Deck';
 import * as actions from "../actions/DeckActions"
 
 class DeckList extends Component {
+  static navigationOptions = () => ({
+    title: "Deck List",
+  })
+
   componentDidMount() {
     const { getDecks, getDeck } = this.props;
     getDecks()
@@ -13,14 +17,13 @@ class DeckList extends Component {
 
   render() {
     const { decks, navigation } = this.props;
-    console.log(decks)
     return (
       <List>
-        {Object.keys(decks).map((key, i) => 
+        {Object.keys(decks).map((title, i) => 
           <Deck
             key={i}
-            title={decks[key].title}
-            questions={decks[key].questions}
+            title={decks[title].title}
+            questions={decks[title].questions}
             navigation={navigation}
           />
         )}

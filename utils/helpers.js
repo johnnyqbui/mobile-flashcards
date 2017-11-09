@@ -6,16 +6,10 @@ import { Notifications, Permissions } from 'expo'
 
 const NOTIFICATION_KEY = 'UdaciFitness:notifications'
 
-export const addCard = (decks, title, question, answer) => {
+export const createCard = (question, answer) => {
   return {
-    ...decks,
-    decks[title]: {
-      title,
-      questions: [{
-        question,
-        answer
-      }]
-    }
+    question,
+    answer
   }
 }
 

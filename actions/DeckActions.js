@@ -20,17 +20,19 @@ export const getDeck = id => dispatch => {
 }
 
 export const saveDeckTitle = title => dispatch => {
-	FlashCardsApi.saveDeckTitle(title).then(() => 
+	FlashCardsApi.saveDeckTitle(title).then(deck => 
 		dispatch({
 			type: SAVE_DECK_TITLE,
+			deck
 		})
 	)
 }
 
 export const addCardToDeck = (title, card) => dispatch => {
-	FlashCardsApi.addCardToDeck(title, card).then(() => 
+	FlashCardsApi.addCardToDeck(title, card).then(deck => 
 		dispatch({
 			type: ADD_CARD_TO_DECK,
+			deck
 		})
 	)
 }

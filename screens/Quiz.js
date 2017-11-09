@@ -10,25 +10,20 @@ class Quiz extends Component {
 
   state = {
     currentQuestion: 0,
-    showAnswer: false
+    showAnswer: false,
+    score: 0,
+    endQuiz: false
   };
 
-  nextCard = () => {
+  nextCard = (option) => {
     const { questions } = this.props.selectedDeck;
     this.setState(prevState => ({
       currentQuestion:
         prevState.currentQuestion !== questions.length - 1
           ? prevState.currentQuestion + 1
-          : prevState.currentQuestion
-    }));
-  };
-
-  prevCard = () => {
-    this.setState(prevState => ({
-      currentQuestion:
-        prevState.currentQuestion !== 0
-          ? prevState.currentQuestion - 1
-          : prevState.currentQuestion
+          : prevState.currentQuestion,
+      score: option === "Correct" ? prevState.score + 1 : prevState.score,
+      endQuiz: prevState.currentQuestion === questions.length - 1 && true
     }));
   };
 
@@ -40,44 +35,52 @@ class Quiz extends Component {
 
   render() {
     const { title, questions } = this.props.selectedDeck;
-    const { currentQuestion, showAnswer } = this.state;
+    const { currentQuestion, showAnswer, score, endQuiz } = this.state;
     const questionLength = questions && questions.length;
     const question = questions && questions[currentQuestion].question;
     const answer = questions && questions[currentQuestion].answer;
     return (
       <View style={styles.container}>
-        <View style={styles.currentQuestionNumber}>
-          <Text>Question 1 out of {questionLength}</Text>
-        </View>
-        <View style={styles.questionCard}>
-          <Text style={styles.question}>{showAnswer ? answer : question}</Text>
-            <Button
-              title={"Answer"}
-              icon={{ name: "cycle", type: "entypo" }}
-              buttonStyle={[styles.button, styles.answerButton]}
-              onPress={() => this.flipCard()}
-            />
-          <View style={styles.buttonsWrapper}>
-            <Button
-              title={"Correct"}
-              icon={{ name: "thumbsup", type: "octicon" }}
-              buttonStyle={[styles.button, styles.correctButton]}
-              onPress={() => this.nextCard()}
-            />
-            <Button
-              title={"Incorrect"}
-              icon={{ name: "thumbsdown", type: "octicon" }}
-              buttonStyle={[styles.button, styles.incorrectButton]}
-              onPress={() => this.prevCard()}
-            />
+      {endQuiz
+        ? <View>
+            <Text>You got {score} out of {questionLength} </Text>
           </View>
-        </View>
+        : <View>
+            <View style={styles.currentQuestionNumber}>
+              <Text>Question {currentQuestion + 1} out of {questionLength}</Text>
+            </View>
+            <View style={styles.questionCard}>
+              <Text style={styles.question}>{showAnswer ? answer : question}</Text>
+                <Button
+                  title={showAnswer ? "Question" : "Answer"}
+                  icon={{ name: "cycle", type: "entypo" }}
+                  buttonStyle={[styles.button, styles.answerButton]}
+                  onPress={() => this.flipCard()}
+                />
+              <View style={styles.buttonsWrapper}>
+                <Button
+                  title={"Correct"}
+                  icon={{ name: "thumbsup", type: "octicon" }}
+                  buttonStyle={[styles.button, styles.correctButton]}
+                  onPress={() => this.nextCard("Correct")}
+                />
+                <Button
+                  title={"Incorrect"}
+                  icon={{ name: "thumbsdown", type: "octicon" }}
+                  buttonStyle={[styles.button, styles.incorrectButton]}
+                  onPress={() => this.nextCard("Incorrect")}
+                />
+              </View>
+            </View>
+          </View>
+      }
+       
       </View>
     );
   }
 }
 
-const { height, width } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -98,7 +101,7 @@ const styles = StyleSheet.create({
     margin: 20
   },
   question: {
-    fontSize: 40,
+    fontSize: 24,
     margin: 20,
     justifyContent: 'center',
     alignItems: 'center'
@@ -108,19 +111,18 @@ const styles = StyleSheet.create({
     marginVertical: 20
   },
   buttonsWrapper: {
-    // width: width / 2,
-    marginVertical: 20,
-    flexDirection: 'row',
-    flexWrap: 'wrap'
+    marginTop: 20,
   },
   button: {
-    margin: 10
+    width: width/1.33,
+    margin: 10,
+    padding: 15
   },
   correctButton: {
-    backgroundColor: "green"
+    backgroundColor: "#3DC162"
   },
   incorrectButton: {
-    backgroundColor: "red"
+    backgroundColor: "#d8262e"
   }
 });
 

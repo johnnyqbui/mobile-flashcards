@@ -12,7 +12,7 @@ class IndividualDeck extends Component {
     headerRight: (
       <Button
         title="Add Card"
-        backgroundColor="white"
+        backgroundColor="rgba(0,0,0,0)"
         color="#00B1FF"
         buttonStyle={{ padding: 0, margin: 0 }}
         borderRadius={5}
@@ -43,7 +43,7 @@ class IndividualDeck extends Component {
           <Button
             title={"Start Quiz"}
             buttonStyle={styles.button}
-            color={"#000"}
+            color={"#00B1FF"}
             fontSize={24}
             large={true}
             onPress={() => toQuizScreen()}
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#fff",
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: "#00B1FF",
     margin: 20
   }
 });

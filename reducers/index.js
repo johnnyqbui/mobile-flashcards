@@ -22,10 +22,19 @@ const deckData = (state = deckDataState, action) => {
     case SAVE_DECK_TITLE :
       return {
         ...state,
+        decks: {
+          ...state.decks,
+          [deck.title]: deck
+        },
       }
     case ADD_CARD_TO_DECK :
       return {
         ...state,
+        decks: {
+          ...state.decks,
+          [deck.title]: deck
+        },
+        selectedDeck: deck
       }
     default :
       return state
