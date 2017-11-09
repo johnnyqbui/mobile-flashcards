@@ -23,7 +23,7 @@ class Quiz extends Component {
           ? prevState.currentQuestion + 1
           : prevState.currentQuestion,
       score: option === "Correct" ? prevState.score + 1 : prevState.score,
-      endQuiz: prevState.currentQuestion === questions.length - 1 && true
+      endQuiz: prevState.currentQuestion === questions.length - 1
     }));
   };
 
