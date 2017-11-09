@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, TextInput, View, Animated } from "react-native";
 import { connect } from "react-redux";
 import { Button } from "react-native-elements";
 import * as actions from "../actions/DeckActions";
@@ -8,15 +8,19 @@ import { createCard } from "../utils/helpers";
 class NewCard extends Component {
   state = {
     question: "",
-    answer: ""
+    answer: "",
+    messageInfoOpacity: 0
   };
 
   addCard = (question, answer) => {
-    const { addCardToDeck, selectedDeck, decks } = this.props;
+    const { addCardToDeck, selectedDeck, decks, messageInfoOpacity } = this.props;
     this.setState({
       question: "",
       answer: ""
     })
+    Animated.timing(messageInfoOpacity, { 
+      toValue: 1,
+    }).start()
     const card = createCard(question, answer)
     addCardToDeck(selectedDeck.title, card)
   };

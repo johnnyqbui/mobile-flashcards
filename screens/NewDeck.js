@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, TextInput, View, Animated, Alert } from "react-native";
 import { connect } from "react-redux";
 import { Button } from "react-native-elements";
 import * as actions from "../actions/DeckActions";
@@ -9,19 +9,24 @@ class NewDeck extends Component {
     header: null,
   })
 
-  state = {
-    title: ""
-  };
+  state = { title: "" };
 
   addDeck = (title) => {
     const { saveDeckTitle, selectedDeck, decks } = this.props;
-    saveDeckTitle(title)
-    this.setState({ title: "" })
+
+    // Check if deck already exists
+    const matchedInDeck = Object.keys(decks).filter(deck => deck === title)
+    if (matchedInDeck.length) {
+      Alert.alert("Deck Already Exists")
+    } else {
+      saveDeckTitle(title)
+      this.setState({ title: "" })
+      Alert.alert("Deck Added")
+    }
   };
 
   render() {
     const { title } = this.state;
-
     return (
       <View style={styles.container}>
         <TextInput
@@ -48,12 +53,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    paddingTop: 50
   },
   input: {
     height: 50,
     fontSize: 16,
-    margin: 15,
+    marginHorizontal: 15,
+    marginTop: 50,
     padding: 5,
     borderBottomWidth: 1,
     borderColor: 'silver',
@@ -66,7 +71,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#00B1FF",
     margin: 20
-  }
+  },
 });
 
 const mapStateToProps = deckData => {
