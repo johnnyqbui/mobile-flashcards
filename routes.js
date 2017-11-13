@@ -10,6 +10,7 @@ import IndividualDeck from "./screens/IndividualDeck";
 import NewDeck from "./screens/NewDeck";
 import NewCard from "./screens/NewCard";
 import Quiz from "./screens/Quiz";
+import { purple, darkPurp } from "./utils/colors";
 
 const Tabs = TabNavigator(
   {
@@ -33,30 +34,26 @@ const Tabs = TabNavigator(
     }
   },
   {
-    tabBarPosition: 'bottom',
     tabBarOptions: {
-      activeBackgroundColor: "#6B6699",
+      activeBackgroundColor: darkPurp,
       labelStyle: {
         fontSize: 14,
         color: "#E5E5E5"
       },
+      showIcon: true,
+      showLabel: true,
       style: {
         height: 56,
         backgroundColor: "#8883AE",
-        shadowColor: "rgba(0, 0, 0, 0.24)",
-        shadowOffset: {
-          width: 0,
-          height: 3
-        },
-        shadowRadius: 6,
-        shadowOpacity: 1
+
       }
     }
   }
 );
 
 export const rootNavigator = () => {
-  return StackNavigator({
+  return StackNavigator(
+  {
     Home: {
       screen: Tabs
     },
@@ -64,28 +61,26 @@ export const rootNavigator = () => {
       screen: IndividualDeck,
       navigationOptions: {
         headerTintColor: "#00B1FF",
-        headerStyle: {
-          marginTop: -20
-        }
       }
     },
     NewCard: {
       screen: NewCard,
       navigationOptions: {
         headerTintColor: "#00B1FF",
-        headerStyle: {
-          marginTop: -20
-        }
       }
     },
     Quiz: {
       screen: Quiz,
       navigationOptions: {
         headerTintColor: "#00B1FF",
-        headerStyle: {
-          marginTop: -20
-        }
       }
     }
-  });
+  },
+  {
+    cardStyle: {
+      paddingTop: 0,
+      marginTop: 0
+    }
+  }
+  );
 };

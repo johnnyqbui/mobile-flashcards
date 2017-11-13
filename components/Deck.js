@@ -8,12 +8,17 @@ import { getDeck } from "../actions/DeckActions";
 const Deck = props => {
   const { title, questions, getDeck, selectedDeck, toDeckScreen } = props;
 
+  const openDeck = title => {
+    getDeck(title);
+    toDeckScreen(title);
+  };
+
   return (
     <ListItem
       key={title}
       title={title}
       badge={{ value: questions.length }}
-      onPress={() => toDeckScreen(title)}
+      onPress={() => openDeck(title)}
     />
   );
 };

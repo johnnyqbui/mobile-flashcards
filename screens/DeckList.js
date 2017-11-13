@@ -10,12 +10,11 @@ class DeckList extends Component {
   static navigationOptions = () => ({
     title: "Deck List",
     headerStyle: {
-      paddingTop: 20,
-      paddingBottom: 40,
-      backgroundColor: purple
+      backgroundColor: purple,
     },
     headerTitleStyle: {
       color: white,
+      alignSelf: 'center',
       fontSize: 24
     }
   });
