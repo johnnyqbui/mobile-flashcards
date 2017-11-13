@@ -20,6 +20,10 @@ class NewCard extends Component {
     messageInfoOpacity: new Animated.Value(0)
   };
 
+  componentWillUnmount() {
+    this.state.messageInfoOpacity.removeAllListeners()
+  }
+
   addCard = (question, answer) => {
     const { messageInfoOpacity } = this.state;
     const { addCardToDeck, selectedDeck, decks } = this.props;
