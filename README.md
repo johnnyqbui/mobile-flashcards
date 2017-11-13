@@ -2,6 +2,11 @@
 
 Users will be able to create different categories of flashcards called "decks", add flashcards to those decks, then take quizzes on those decks.
 
+# Platforms tested 
+
+* iPhone 6
+* Samsung Galaxy 4
+
 ## Prerequisites
 
 * Make sure to install the expo app from the Play or App store on either your device to be able to run the app on your device.
