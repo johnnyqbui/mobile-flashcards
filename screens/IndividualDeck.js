@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Alert } from "react-native";
 import { connect } from "react-redux";
 import { Button } from "react-native-elements";
+import { getDeck, deleteDeck } from "../actions/DeckActions";
+import { white, purple, red } from "../utils/colors";
 
 class IndividualDeck extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: navigation.state.params.title,
     headerTitleStyle: {
-      color: "rgba(0,0,0,0)",
+      color: "rgba(0,0,0,0)"
     },
     headerRight: (
       <Button
@@ -17,22 +19,46 @@ class IndividualDeck extends Component {
         buttonStyle={{ padding: 0, margin: 0 }}
         borderRadius={5}
         onPress={() =>
-          navigation.navigate("NewCard", {title: navigation.state.params.title})}
+          navigation.navigate("NewCard", {
+            title: navigation.state.params.title
+          })}
       />
     )
   });
 
   componentDidMount() {
-    this.props.navigation.setParams({
-      toNewCardScreen: this.props.toNewCardScreen
+    const { navigation, toNewCardScreen } = this.props;
+    navigation.setParams({
+      toNewCardScreen: toNewCardScreen
     });
   }
 
+  confirmDelete = title => {
+    const { deleteDeck, goBack } = this.props;
+    Alert.alert("Delete Deck", "Are you sure?", [
+      { text: "Cancel" },
+      {
+        text: "OK",
+        onPress: () => {
+          deleteDeck(title);
+          goBack();
+        }
+      }
+    ]);
+  };
+
   render() {
-    const { selectedDeck, toQuizScreen } = this.props;
-    const { title, questions } = this.props.selectedDeck;
-    const deckTitle = title && title;
-    const deckQuestionsLength = questions && questions.length;
+    const {
+      selectedDeck,
+      deleteDeck,
+      toQuizScreen,
+      toNewCardScreen,
+      navigation
+    } = this.props;
+
+    const { questions } = selectedDeck;
+    const deckTitle = navigation.state.params.title && navigation.state.params.title;
+    const deckQuestionsLength = questions ? questions.length : 0;
     return (
       <View style={styles.container}>
         <View style={styles.titleContainer}>
@@ -40,13 +66,32 @@ class IndividualDeck extends Component {
           <Text style={styles.cardLength}>{deckQuestionsLength} Cards</Text>
         </View>
         <View style={styles.buttonWrapper}>
+          {deckQuestionsLength ? (
+            <Button
+              title={"Start Quiz"}
+              buttonStyle={[styles.button, styles.quizButton]}
+              color={purple}
+              fontSize={24}
+              large={true}
+              onPress={() => toQuizScreen()}
+            />
+          ) : (
+            <Button
+              title={"Add Card"}
+              buttonStyle={[styles.button, styles.quizButton]}
+              color={purple}
+              fontSize={24}
+              large={true}
+              onPress={() => toNewCardScreen()}
+            />
+          )}
           <Button
-            title={"Start Quiz"}
-            buttonStyle={styles.button}
-            color={"#00B1FF"}
-            fontSize={24}
-            large={true}
-            onPress={() => toQuizScreen()}
+            title={"Delete Deck"}
+            buttonStyle={[styles.button, styles.deleteButton]}
+            color={red}
+            fontSize={18}
+            large={false}
+            onPress={() => this.confirmDelete(deckTitle)}
           />
         </View>
       </View>
@@ -73,10 +118,15 @@ const styles = StyleSheet.create({
     color: "silver"
   },
   button: {
-    backgroundColor: "#fff",
+    backgroundColor: white,
     borderWidth: 1,
-    borderColor: "#00B1FF",
     margin: 20
+  },
+  quizButton: {
+    borderColor: purple
+  },
+  deleteButton: {
+    borderColor: red
   }
 });
 
@@ -88,10 +138,12 @@ const mapStateToProps = deckData => {
 };
 
 const mapDispatchToProps = (dispatch, { navigation }) => {
-  const { navigate } = navigation;
+  const { navigate, goBack } = navigation;
   return {
-    toNewCardScreen: title => navigate("NewCard", { title }),
-    toQuizScreen: title => navigate("Quiz", { title })
+    toNewCardScreen: () => navigate("NewCard"),
+    toQuizScreen: () => navigate("Quiz"),
+    goBack: () => goBack(),
+    deleteDeck: title => dispatch(deleteDeck(title))
   };
 };
 

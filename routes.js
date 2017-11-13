@@ -17,30 +17,32 @@ const Tabs = TabNavigator(
       screen: DeckList,
       navigationOptions: {
         tabBarLabel: "Decks",
-        tabBarIcon: ({ tintColor }) => (
-          <MaterialIcons name="view-list" size={35} color={tintColor} />
-        ),
-        headerStyle: {
-          marginTop: -20,
-        },
+        tabBarIcon: () => (
+          <MaterialIcons name="view-list" size={35} color={"#E5E5E5"} />
+        )
       }
     },
     NewDeck: {
       screen: NewDeck,
       navigationOptions: {
         tabBarLabel: "Add Deck",
-        tabBarIcon: ({ tintColor }) => (
-          <FontAwesome name="plus-square" size={30} color={tintColor} />
+        tabBarIcon: () => (
+          <FontAwesome name="plus-square" size={30} color={"#E5E5E5"} />
         )
       }
     }
   },
   {
+    tabBarPosition: 'bottom',
     tabBarOptions: {
-      activeTintColor: Platform.OS === "ios" ? "purple" : "white",
+      activeBackgroundColor: "#6B6699",
+      labelStyle: {
+        fontSize: 14,
+        color: "#E5E5E5"
+      },
       style: {
         height: 56,
-        backgroundColor: Platform.OS === "ios" ? "white" : "purple",
+        backgroundColor: "#8883AE",
         shadowColor: "rgba(0, 0, 0, 0.24)",
         shadowOffset: {
           width: 0,
@@ -63,8 +65,8 @@ export const rootNavigator = () => {
       navigationOptions: {
         headerTintColor: "#00B1FF",
         headerStyle: {
-          marginTop: -20,
-        },
+          marginTop: -20
+        }
       }
     },
     NewCard: {
@@ -72,7 +74,7 @@ export const rootNavigator = () => {
       navigationOptions: {
         headerTintColor: "#00B1FF",
         headerStyle: {
-          marginTop: -20,
+          marginTop: -20
         }
       }
     },
@@ -81,7 +83,7 @@ export const rootNavigator = () => {
       navigationOptions: {
         headerTintColor: "#00B1FF",
         headerStyle: {
-          marginTop: -20,
+          marginTop: -20
         }
       }
     }

@@ -1,46 +1,56 @@
-import React, { PureComponent } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { connect } from 'react-redux'
-import { List } from 'react-native-elements'
-import Deck from '../components/Deck';
-import * as actions from "../actions/DeckActions"
+import React, { Component } from "react";
+import { StyleSheet, Text, View, FlatList } from "react-native";
+import { connect } from "react-redux";
+import { List } from "react-native-elements";
+import Deck from "../components/Deck";
+import * as actions from "../actions/DeckActions";
+import { white, purple } from "../utils/colors";
 
-class DeckList extends PureComponent {
+class DeckList extends Component {
   static navigationOptions = () => ({
     title: "Deck List",
-  })
+    headerStyle: {
+      paddingTop: 20,
+      paddingBottom: 40,
+      backgroundColor: purple
+    },
+    headerTitleStyle: {
+      color: white,
+      fontSize: 24
+    }
+  });
 
   componentDidMount() {
     const { getDecks, getDeck } = this.props;
-    getDecks()
+    getDecks();
   }
 
   render() {
     const { decks, navigation } = this.props;
-    console.log('run')
+    const arrDeck = Object.keys(decks).map(deck => deck);
     return (
       <List>
-        {Object.keys(decks).map((title, i) => 
-          <Deck
-            key={i}
-            title={decks[title].title}
-            questions={decks[title].questions}
-            navigation={navigation}
-          />
-        )}
+        <FlatList
+          data={arrDeck}
+          keyExtractor={item => decks[item].title}
+          renderItem={({ item }) => (
+            <Deck
+              title={decks[item].title}
+              questions={decks[item].questions}
+              navigation={navigation}
+            />
+          )}
+        />
       </List>
     );
   }
 }
 
-const mapStateToProps = (deckData) => {
+const mapStateToProps = deckData => {
   const { decks } = deckData;
   return {
     decks
-  }
-}
+  };
+};
 
-export default connect(
-  mapStateToProps,
-  actions,
-)(DeckList)
+export default connect(mapStateToProps, actions)(DeckList);

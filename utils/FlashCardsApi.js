@@ -1,13 +1,10 @@
 import { AsyncStorage } from "react-native";
 import { FLASHCARDS_STORAGE_KEY } from "./_deck";
 import { setInitialData } from "../utils/_deck";
+
 export const getDecks = () => {
   return AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY).then(results => {
-    return JSON.parse(results);
-    // const decks = JSON.parse(results);
-    // return Object.keys(decks).length > 0
-    // ? JSON.parse(results)
-    // : setInitialData();
+    return results ? JSON.parse(results) : setInitialData()
   });
 };
 
@@ -27,9 +24,9 @@ export const saveDeckTitle = title => {
         title,
         questions: []
       }
-    }
+    };
     AsyncStorage.setItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(newDeck));
-    return newDeck[title]
+    return newDeck[title];
   });
 };
 
@@ -48,18 +45,12 @@ export const addCardToDeck = (title, card) => {
   });
 };
 
-// export function submitEntry ({ entry, key }) {
-//   return AsyncStorage.mergeItem(FLASHCARDS_STORAGE_KEY, JSON.stringify({
-//     [key]: entry
-//   }))
-// }
-
-// export function removeEntry (key) {
-//   return AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY)
-//     .then((results) => {
-//       const data = JSON.parse(results)
-//       data[key] = undefined
-//       delete data[key]
-//       AsyncStorage.setItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(data))
-//     })
-// }
+export const deleteDeck = title => {
+  return AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY).then(results => {
+    const decks = JSON.parse(results);
+    decks[title] = undefined;
+    delete decks[title];
+    AsyncStorage.setItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(decks));
+    return decks;
+  });
+};

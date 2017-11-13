@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import { Constants } from 'expo';
 import { rootNavigator } from "./routes";
+import { setLocalNotification } from "./utils/helpers"
 
 const FlashCardsStatusBar = ({backgroundColor, ...props}) => {
   return (
@@ -15,6 +16,10 @@ const FlashCardsStatusBar = ({backgroundColor, ...props}) => {
 }
 
 export default class App extends Component {
+  componentDidMount() {
+    setLocalNotification()
+  }
+
   render() {
     const Layout = rootNavigator();
     return (

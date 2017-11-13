@@ -1,10 +1,6 @@
-import React from 'react'
-import { View, StyleSheet, AsyncStorage } from 'react-native'
-import { FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
-import { red, orange, blue, lightPurp, pink, white } from './colors'
+import { AsyncStorage } from 'react-native'
 import { Notifications, Permissions } from 'expo'
-
-const NOTIFICATION_KEY = 'UdaciFitness:notifications'
+import { FLASHCARDS_STORAGE_KEY } from "./_deck";
 
 export const createCard = (question, answer) => {
   return {
@@ -13,21 +9,19 @@ export const createCard = (question, answer) => {
   }
 }
 
-export function timeToString (time = Date.now()) {
-  const date = new Date(time)
-  const todayUTC = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
-  return todayUTC.toISOString().split('T')[0]
+export const roundScore = (score, questions) => {
+  const percent = ((score/questions)*100).toFixed(2)
+  return percent
 }
 
-export function clearLocalNotification () {
-  return AsyncStorage.removeItem(NOTIFICATION_KEY)
-    .then(Notifications.cancelAllScheduledNotificationsAsync)
+export const clearLocalNotification = () => {
+  return Notifications.cancelAllScheduledNotificationsAsync
 }
 
-function createNotification () {
+export const createNotification = () => {
   return {
-    title: 'Log your stats!',
-    body: "👋 don't forget to log your stats for today!",
+    title: 'Did you study for the day?',
+    body: "Don't forget to quiz yourself at least once a day!",
     ios: {
       sound: true,
     },
@@ -40,8 +34,8 @@ function createNotification () {
   }
 }
 
-export function setLocalNotification () {
-  AsyncStorage.getItem(NOTIFICATION_KEY)
+export const setLocalNotification = () => {
+  AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY)
     .then(JSON.parse)
     .then((data) => {
       if (data === null) {
@@ -63,7 +57,7 @@ export function setLocalNotification () {
                 }
               )
 
-              AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
+              AsyncStorage.setItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(true))
             }
           })
       }

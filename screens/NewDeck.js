@@ -1,27 +1,46 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, TextInput, View, Animated, Alert } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Animated,
+  Alert,
+  Keyboard
+} from "react-native";
 import { connect } from "react-redux";
 import { Button } from "react-native-elements";
-import * as actions from "../actions/DeckActions";
+import { saveDeckTitle, getDeck } from "../actions/DeckActions";
+import {
+  getDailyReminderValue,
+  clearLocalNotification,
+  setLocalNotification
+} from "../utils/helpers";
+import { white, purple } from "../utils/colors";
 
 class NewDeck extends Component {
   static navigationOptions = () => ({
-    header: null,
-  })
+    header: null
+  });
 
   state = { title: "" };
 
-  addDeck = (title) => {
-    const { saveDeckTitle, selectedDeck, decks } = this.props;
+  addDeck = title => {
+    const { decks, addNewDeck } = this.props;
+    if (title.length === 0) {
+      return Alert.alert("Title cannot be empty");
+    }
 
     // Check if deck already exists
-    const matchedInDeck = Object.keys(decks).filter(deck => deck === title)
+    const matchedInDeck = Object.keys(decks).filter(deck => deck === title);
     if (matchedInDeck.length) {
-      Alert.alert("Deck Already Exists")
+      Alert.alert("Deck Already Exists");
     } else {
-      saveDeckTitle(title)
-      this.setState({ title: "" })
-      Alert.alert("Deck Added")
+      this.setState({ title: "" });
+      Keyboard.dismiss();
+      clearLocalNotification();
+      setLocalNotification();
+      addNewDeck(title)
     }
   };
 
@@ -36,7 +55,7 @@ class NewDeck extends Component {
           onChangeText={title => this.setState({ title })}
         />
         <Button
-          title={"Add Deck"}
+          title={"Create Deck"}
           buttonStyle={styles.button}
           color={"#fff"}
           fontSize={24}
@@ -51,8 +70,7 @@ class NewDeck extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
+    backgroundColor: "#fff"
   },
   input: {
     height: 50,
@@ -61,26 +79,32 @@ const styles = StyleSheet.create({
     marginTop: 50,
     padding: 5,
     borderBottomWidth: 1,
-    borderColor: 'silver',
-    backgroundColor: '#eee',
-    alignSelf: 'stretch',
-    flexDirection: 'row',
+    borderColor: "silver",
+    backgroundColor: "#eee",
+    alignSelf: "stretch"
   },
   button: {
-    backgroundColor: "#00B1FF",
-    borderWidth: 1,
-    borderColor: "#00B1FF",
+    alignSelf: "stretch",
+    backgroundColor: purple,
     margin: 20
-  },
+  }
 });
 
 const mapStateToProps = deckData => {
-  const { selectedDeck, decks } = deckData;
+  const { decks } = deckData;
   return {
-    selectedDeck,
     decks
   };
 };
 
+const mapDispatchToProps = (dispatch, { navigation }) => {
+  const { navigate } = navigation;
+  return {
+    addNewDeck: title => dispatch(saveDeckTitle(title)).then(() =>
+      dispatch(getDeck(title)),
+      navigate("IndividualDeck", { title })
+    )
+  };
+};
 
-export default connect(mapStateToProps, actions)(NewDeck);
+export default connect(mapStateToProps, mapDispatchToProps)(NewDeck);
