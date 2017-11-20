@@ -45,11 +45,6 @@ class DeckList extends Component {
   }
 }
 
-const mapStateToProps = deckData => {
-  const { decks } = deckData;
-  return {
-    decks
-  };
-};
+const mapStateToProps = ({ decks }) => ({ decks });
 
 export default connect(mapStateToProps, actions)(DeckList);

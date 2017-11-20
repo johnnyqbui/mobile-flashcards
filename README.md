@@ -2,7 +2,7 @@
 
 Users will be able to create different categories of flashcards called "decks", add flashcards to those decks, then take quizzes on those decks.
 
-# Platforms tested 
+## Platforms tested 
 
 * iPhone 6
 * Samsung Galaxy 4
